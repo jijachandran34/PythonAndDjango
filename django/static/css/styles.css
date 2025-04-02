@@ -1,0 +1,391 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0px;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #3D52A0;
+}
+
+
+/* Navbar Styling */
+.navbar {
+    background-color: #3D52A0;
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: left;
+    gap: 20px;
+}
+
+.navbar ul li {
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.2s;
+    border-radius: 5px;
+}
+
+.navbar ul li:hover {
+    background-color: #7091E6;
+    transform: scale(1.05);
+}
+
+.navbar ul li[x-bind="activePage"] {
+    background-color: #fff;
+    color: #3D52A0;
+    font-weight: bold;
+    border-bottom: 3px solid #3D52A0;
+}
+
+/* Content Area */
+.content {
+    padding: 20px;
+    text-align: center;
+}
+
+h2 {
+    color: #3D52A0;
+}
+
+/* Iframe Styling */
+iframe {
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background: white;
+    margin-top: 10px;
+}
+
+
+
+.input-wrapper {
+    width: 40%;
+    margin-left: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: right;
+}
+/* Input Row - Adjust layout for better alignment */
+.input-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+/* Input Fields - Ensure full width and proper padding */
+.input-field,
+.input-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #3D52A0;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #3D52A0;
+    font-size: 14px;
+}
+
+/* Adjust the text area appearance */
+.input-textarea {
+    resize: vertical;
+    min-height: 40px;
+}
+
+
+.input-wrapper {
+    width: 40%;
+    margin-left: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: right;
+}
+/* Input Row - Adjust layout for better alignment */
+.input-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+/* Input Fields - Ensure full width and proper padding */
+.input-field,
+.input-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #3D52A0;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #3D52A0;
+    font-size: 14px;
+}
+
+/* Adjust the text area appearance */
+.input-textarea {
+    resize: vertical;
+    min-height: 40px;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin-top: 15px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border:1px solid #ddd; 
+}
+
+th {
+    background-color: #3D52A0;
+    color: white;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+.content-cell {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+/* Modal Styles */
+.modal {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Bigger Modal */
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 60%; 
+    max-width: 1000px; 
+    max-height: 90vh; 
+    position: relative;
+    overflow-y: auto;
+}
+
+
+/* Form Inputs */
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #3D52A0;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #3D52A0;
+    font-size: 14px;
+}
+
+.modal-content textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.status-type-container {
+    display: flex;
+    gap: 10px;
+}
+
+/* Ensure Buttons are Visible */
+.textarea-select-container {
+    margin-top: 10px;
+}
+
+/* Button Group Styling */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    background-color: #3D52A0;
+    color: white;
+    margin:5px
+}
+
+button:hover {
+    background-color: #7091E6;
+}
+
+.btn-add {
+    display: block;
+    width: 25%;
+    margin: 10px 0;
+    padding: 12px;
+    margin-top: 15px; /* Space between input fields and button */
+    background-color: #3D52A0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    justify-content: right;
+
+}
+
+.button.remove:hover {
+    background-color: #b02a37;
+}
+
+
+.btn-save,
+.btn-cancel {
+    flex: 1; /* Ensure both buttons take equal width */
+    padding: 12px 20px; /* Bigger buttons */
+    border-radius: 5px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: #3D52A0;
+}
+
+
+/* Close Button */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Dynamic JSON Container */
+.dynamic-json-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    color: #3D52A0;
+    justify-items: left;
+}
+
+/* for question content and markdown */
+.editor-container {
+    max-width: 100%;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.choice-container {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: flex-start;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.choice-editor {
+    width: 100%; 
+    min-height: 150px; 
+    margin-bottom: 10px;
+}
+
+.choice-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px; /* Space between editor and score/button */
+}
+
+.choice-actions input {
+    width: 80px; /* Limit score input width */
+    padding: 5px;
+    font-size: 16px;
+}
+
+pre {
+    background: #eee;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+/* for question content and markdown */
+
+
+
+
+
+/* .dynamic-json-container .choice {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+}
+
+
+.dynamic-json-container .choice label {
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    width: auto;
+    height: auto;
+} 
+
+.dynamic-json-container button {
+    font-size: 14px;
+    padding: 5px 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    background-color: #3D52A0;
+    color: white;
+}
+    
+.dynamic-json-container input[type="checkbox"] {
+    width: auto; 
+    height: auto; 
+    margin: 0; 
+}
+    */

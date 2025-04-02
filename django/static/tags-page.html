@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tags Management</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://unpkg.com/htmx.org@1.9.6" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div x-data="tagsManager()" class="min-h-screen">
+        <nav class="bg-indigo-600 text-white shadow-md">
+            <div class="container mx-auto px-4 py-3">
+                <div class="flex justify-between items-center">
+                    <div class="text-xl font-bold">Question Manager</div>
+                    <div class="flex space-x-4">
+                        <a href="index-page.html" class="hover:underline">Dashboard</a>
+                        <a href="question-list.html" class="hover:underline">Questions</a>
+                        <a href="question-groups.html" class="hover:underline">Question Groups</a>
+                        <a href="question-types.html" class="hover:underline">Question Types</a>
+                        <a href="tags-page.html" class="hover:underline">Tags</a>
+                        <a href="reviews.html" class="hover:underline">Reviews</a>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span x-text="currentUser"></span>
+                        <button class="px-3 py-1 bg-indigo-700 rounded hover:bg-indigo-800">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold">Tags Management</h1>
+                <button @click="openModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
+                    Create New Tag
+                </button>
+            </div>
+
+            <!-- Filters -->
+            <div class="bg-white p-4 rounded-md shadow-md mb-6">
+                <div class="flex flex-wrap gap-4">
+                    <div class="w-full md:w-1/4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Key Filter</label>
+                        <input type="text" x-model="filters.key" @input="filterTags()" class="w-full p-2 border rounded-md">
+                    </div>
+                    <div class="w-full md:w-1/4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Value Filter</label>
+                        <input type="text" x-model="filters.value" @input="filterTags()" class="w-full p-2 border rounded-md">
+                    </div>
+                    <div class="w-full md:w-1/4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Created By</label>
+                        <select x-model="filters.createdBy" @change="filterTags()" class="w-full p-2 border rounded-md">
+                            <option value="">All</option>
+                            <template x-for="user in users" :key="user.id">
+                                <option :value="user.id" x-text="user.username"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div class="w-full md:w-1/4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
+                        <select x-model="filters.sortBy" @change="filterTags()" class="w-full p-2 border rounded-md">
+                            <option value="key">Key</option>
+                            <option value="value">Value</option>
+                            <option value="created_at">Created Date</option>
+                            <option value="updated_at">Updated Date</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tags Table -->
+            <div class="bg-white rounded-md shadow-md overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Key</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created By</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Updated Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <template x-for="tag in filteredTags" :key="tag.id">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap" x-text="tag.key"></td>
+                                    <td class="px-6 py-4 whitespace-nowrap" x-text="tag.value"></td>
+                                    <td class="px-6 py-4 whitespace-nowrap" x-text="tag.created_by.username"></td>
+                                    <td class="px-6 py-4 whitespace-nowrap" x-text="formatDate(tag.created_at)"></td>
+                                    <td class="px-6 py-4 whitespace-nowrap" x-text="formatDate(tag.updated_at)"></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <button 
+                                            @click="viewTagUsage(tag.id)" 
+                                            class="text-indigo-600 hover:text-indigo-900 mr-2">
+                                            View Usage
+                                        </button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination -->
+                <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-sm text-gray-700">
+                                Showing
+                                <span class="font-medium" x-text="pagination.start + 1"></span>
+                                to
+                                <span class="font-medium" x-text="pagination.end"></span>
+                                of
+                                <span class="font-medium" x-text="pagination.total"></span>
+                                results
+                            </p>
+                        </div>
+                        <div>
+                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                                <button @click="prevPage()" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" :disabled="pagination.page === 1">
+                                    Previous
+                                </button>
+                                <button @click="nextPage()" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" :disabled="pagination.page === pagination.totalPages">
+                                    Next
+                                </button>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Create Tag Modal -->
+        <div x-show="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg w-full max-w-md p-6" @click.away="showModal = false">
+                <h2 class="text-xl font-bold mb-4">Create New Tag</h2>
+                <form @submit.prevent="createTag()">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Key *</label>
+                        <input type="text" x-model="newTag.key" required class="w-full p-2 border rounded-md">
+                        <p class="text-sm text-gray-500 mt-1">Key cannot be changed once created</p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Value *</label>
+                        <input type="text" x-model="newTag.value" required class="w-full p-2 border rounded-md">
+                        <p class="text-sm text-gray-500 mt-1">Value cannot be changed once created</p>
+                    </div>
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" @click="showModal = false" class="px-4 py-2 border rounded-md">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Create</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tag Usage Modal -->
+        <div x-show="showUsageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg w-full max-w-3xl p-6" @click.away="showUsageModal = false">
+                <h2 class="text-xl font-bold mb-4">Tag Usage: <span x-text="selectedTag ? `${selectedTag.key}: ${selectedTag.value}` : ''"></span></h2>
+                
+                <div class="mb-4">
+                    <h3 class="font-medium mb-2">Questions</h3>
+                    <div class="max-h-40 overflow-y-auto border rounded-md">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UID</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Revision</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <template x-for="question in tagUsage.questions" :key="question.id">
+                                    <tr>
+                                        <td class="px-4 py-2" x-text="question.uid"></td>
+                                        <td class="px-4 py-2" x-text="question.revision_id"></td>
+                                        <td class="px-4 py-2" x-text="question.status"></td>
+                                        <td class="px-4 py-2">
+                                            <a :href="`question-edit.html?id=${question.id}`" class="text-indigo-600 hover:underline">View</a>
+                                        </td>
+                                    </tr>
+                                </template>
+                                <tr x-show="tagUsage.questions.length === 0">
+                                    <td colspan="4" class="px-4 py-2 text-center text-gray-500">No questions using this tag</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h3 class="font-medium mb-2">Question Groups</h3>
+                    <div class="max-h-40 overflow-y-auto border rounded-md">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UID</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Revision</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <template x-for="group in tagUsage.questionGroups" :key="group.id">
+                                    <tr>
+                                        <td class="px-4 py-2" x-text="group.uid"></td>
+                                        <td class="px-4 py-2" x-text="group.revision_id"></td>
+                                        <td class="px-4 py-2" x-text="group.status"></td>
+                                        <td class="px-4 py-2">
+                                            <a :href="`question-group-edit.html?id=${group.id}`" class="text-indigo-600 hover:underline">View</a>
+                                        </td>
+                                    </tr>
+                                </template>
+                                <tr x-show="tagUsage.questionGroups.length === 0">
+                                    <td colspan="4" class="px-4 py-2 text-center text-gray-500">No question groups using this tag</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h3 class="font-medium mb-2">Reviews</h3>
+                    <div class="max-h-40 overflow-y-auto border rounded-md">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Resource</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reviewer</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <template x-for="review in tagUsage.reviews" :key="review.id">
+                                    <tr>
+                                        <td class="px-4 py-2" x-text="review.resource_name"></td>
+                                        <td class="px-4 py-2" x-text="review.status"></td>
+                                        <td class="px-4 py-2" x-text="review.reviewer_name"></td>
+                                        <td class="px-4 py-2">
+                                            <a :href="`review.html?id=${review.id}`" class="text-indigo-600 hover:underline">View</a>
+                                        </td>
+                                    </tr>
+                                </template>
+                                <tr x-show="tagUsage.reviews.length === 0">
+                                    <td colspan="4" class="px-4 py-2 text-center text-gray-500">No reviews using this tag</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end">
+                    <button @click="showUsageModal = false" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/tags.js"></script>
+</body>
+</html>

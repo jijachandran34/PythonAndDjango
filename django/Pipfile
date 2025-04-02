@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+asgiref = "==3.8.1"
+psycopg = "==3.2.4"
+sqlparse = "==0.5.3"
+djangorestframework = "*"
+django = "*"
+psycopg2-binary = "*"
+django-json-widget = "*"
+
+[dev-packages]
+debugpy = "*"
+
+[requires]
+python_version = "3.12"

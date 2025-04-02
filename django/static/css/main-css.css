@@ -1,0 +1,153 @@
+/* Main Styles */
+.tag-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background-color: #e5e7eb;
+    color: #374151;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.tag-badge .key {
+    font-weight: 600;
+}
+
+.tag-badge .value {
+    margin-left: 0.25rem;
+}
+
+/* Editor styles */
+.editor-container {
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    overflow: hidden;
+}
+
+.editor-toolbar {
+    border-bottom: 1px solid #d1d5db;
+    padding: 0.5rem;
+    background-color: #f9fafb;
+}
+
+/* Review comments */
+.comment-thread {
+    margin-bottom: 1rem;
+    border-left: 3px solid #3b82f6;
+    padding-left: 1rem;
+}
+
+.comment {
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    margin-bottom: 0.5rem;
+}
+
+.comment-author {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.comment-text {
+    margin-bottom: 0.5rem;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Status badges */
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-draft {
+    background-color: #e5e7eb;
+    color: #374151;
+}
+
+.status-published {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status-inactive {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.status-closed {
+    background-color: #f3f4f6;
+    color: #1f2937;
+}
+
+.status-for-review {
+    background-color: #eff6ff;
+    color: #1e40af;
+}
+
+.status-in-progress {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.status-need-changes {
+    background-color: #fef2f2;
+    color: #b91c1c;
+}
+
+.status-review-complete {
+    background-color: #ecfdf5;
+    color: #065f46;
+}
+
+/* Filter components */
+.filter-container {
+    background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.filter-item {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Revision history */
+.revision-history {
+    margin-top: 1.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    overflow: hidden;
+}
+
+.revision-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.revision-item:last-child {
+    border-bottom: none;
+}
+
+.revision-current {
+    background-color: #f0f9ff;
+}
